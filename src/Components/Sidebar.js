@@ -1,6 +1,10 @@
 import React from 'react';
 import UserProfile from './UserProfile';
 import Incomes from './Incomes';
+import Category from './Category';
+import SubCategory from './SubCategory';
+import Spent  from './Spent';
+import Report from './Report';
 
 function Sidebar() {
   const showPanel = (panelId) => {
@@ -64,20 +68,17 @@ function Sidebar() {
           <Incomes />
         </div>
         <div id="categorias" className="panel" style={{ display: 'none' }}>
-          <h2>Categorías</h2>
-          <p>Contenido del panel de Categorías.</p>
+          <Category />
         </div>
         <div id="subcategorias" className="panel" style={{ display: 'none' }}>
-          <h2>Subcategorías</h2>
-          <p>Contenido del panel de Subcategorías.</p>
+          <SubCategory />
         </div>
         <div id="gastos" className="panel" style={{ display: 'none' }}>
-          <h2>Gastos</h2>
-          <p>Contenido del panel de Gastos.</p>
+          <Spent />
         </div>
         <div id="estadisticas" className="panel" style={{ display: 'none' }}>
           <h2>Estadísticas</h2>
-          <p>Contenido del panel de Estadísticas.</p>
+          <Report />
         </div>
       </div>
     </div>

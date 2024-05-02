@@ -13,6 +13,7 @@ const UserProfile = () => {
       try {
         const userId = sessionStorage.getItem('user');
         const response = await axios.get('http://localhost:8080/usuario/' + userId);
+        console.log(response.data);
         setUserData(response.data);
         setLoading(false);
       } catch (error) {

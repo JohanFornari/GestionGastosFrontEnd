@@ -4,24 +4,24 @@ import axios from 'axios';
 function Register() {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
-  const [pais, setPais] = useState('');
+  const [municipio, setMunicipio] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rpassword, setRPassword] = useState('');
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [paises, setPaises] = useState([]);
+  const [municipios, setMunicipios] = useState([]);
 
   useEffect(() => {
-    // Aquí se realiza la solicitud a la API de países
-    axios.get('https://restcountries.com/v3.1/independent?status=true')
+    // Aquí se realiza la solicitud a la API de municipios
+    axios.get('https://api-colombia.com//api/v1/Department')
       .then(response => {
-        const nombresPaises = response.data.map(pais => pais.name.common);
-        setPaises(nombresPaises);
+        const nombresMunicipios = response.data.map(municipio => municipio.name);
+        setMunicipios(nombresMunicipios);
       })
       .catch(error => {
-        console.error('Error al obtener la lista de países:', error);
+        console.error('Error al obtener la lista de municipios:', error);
       });
   }, []);
 
@@ -29,6 +29,7 @@ function Register() {
     e.preventDefault();
 
     // Obtener el token de localStorage si está disponible
+    /*
     const token = localStorage.getItem('token');
     console.log('token react: ' + token)
     if (!token) {
@@ -38,30 +39,31 @@ function Register() {
     }
     const config = {
       headers: {
-        'Accept': '*/*',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
     };
+    */
+  
 
     axios.post('http://localhost:8080/usuario', {
       nombre: nombre,
       apellido: apellido,
-      pais: pais,
+      municipio: municipio,
       email: email,
-      password: password,
+      clave: password,
       telefono: telefono,
       direccion: direccion,
-      role: {id_role : 1}
+      perfil: {codperfil : 1}
 
-    }, config
+    }
     )
       .then(response => {
         console.log(response.data);
         // Limpia los campos después de crear el riesgo
         setNombre('');
         setApellido('');
-        setPais('');
+        setMunicipio('');
         setEmail('');
         setPassword('');
         setRPassword('');
@@ -76,98 +78,119 @@ function Register() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Crear Usuario</h2>
-      <form onSubmit={handleSubmit}>
-        < div className="mb-3">
-          <label htmlFor="nombre" className="form-label">Nombre:</label>
-          <input
-            type="text"
-            id="nombre"
-            className="form-control"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
+    <div className="container-fluid mt-4">
+      <div className="card mx-auto" style={{ maxWidth: '1000px' }}>
+        <div className="card-body">
+          <h2 className="card-title text-center mb-4">Crear Usuario</h2>
+          
+          <form onSubmit={handleSubmit}>
+  
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label htmlFor="nombre" className="form-label">Nombre:</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  className="form-control"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="apellido" className="form-label">Apellido:</label>
+                <input
+                  type="text"
+                  id="apellido"
+                  className="form-control"
+                  value={apellido}
+                  onChange={(e) => setApellido(e.target.value)}
+                />
+              </div>
+            </div>
+  
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label htmlFor="email" className="form-label">Email:</label>
+                <input
+                  type="text"
+                  id="email"
+                  className="form-control"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="password" className="form-label">Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  className="form-control"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+  
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label htmlFor="rpassword" className="form-label">Repetir Password:</label>
+                <input
+                  type="password"
+                  id="rpassword"
+                  className="form-control"
+                  value={rpassword}
+                  onChange={(e) => setRPassword(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="telefono" className="form-label">Telefono:</label>
+                <input
+                  type="number"
+                  id="telefono"
+                  className="form-control"
+                  value={telefono}
+                  onChange={(e) => setTelefono(e.target.value)}
+                />
+              </div>
+            </div>
+  
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label htmlFor="direccion" className="form-label">Dirección:</label>
+                <input
+                  type="text"
+                  id="direccion"
+                  className="form-control"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="municipio" className="form-label">Municipio:</label>
+                <select
+                  className="form-select"
+                  id="municipio"
+                  value={municipio}
+                  onChange={(e) => setMunicipio(e.target.value)}
+                >
+                  <option value="">Selecciona un Municipio</option>
+                  {municipios.map((nombreMunicipio, index) => (
+                    <option key={index} value={nombreMunicipio}>
+                      {nombreMunicipio}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div> <button className="btn btn-primary d-block mx-auto" type="submit">Registrar Usuario</button></div>
+           
+          </form>
         </div>
-        <div>
-          <label htmlFor="apellido" className="form-label" >Apellido:</label>
-          <input
-            type="text"
-            id="apellido"
-            className="form-control"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="form-label" >Email:</label>
-          <input
-            type="text"
-            id="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="form-label" >Password:</label>
-          <input
-            type="password"
-            id="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-          <div>
-            <label htmlFor="rpassword" className="form-label" >Repetir Password:</label>
-            <input
-              type="password"
-              id="rpassword"
-              className="form-control"
-              value={rpassword}
-              onChange={(e) => setRPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="telefono" className="form-label" >Telefono:</label>
-            <input
-              type="number"
-              id="telefono"
-              className="form-control"
-              value={telefono}
-              onChange={(e) => setTelefono(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="direccion" className="form-label" >Dirección:</label>
-            <input
-              type="text"
-              id="direccion"
-              className="form-control"
-              value={direccion}
-              onChange={(e) => setDireccion(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="pais" className="form-label">País:</label>
-            <select className="form-select"
-              id="pais"
-              value={pais}
-              onChange={(e) => setPais(e.target.value)}
-            >
-              <option value="">Selecciona un país</option>
-              {paises.map((nombrePais, index) => (
-                <option key={index} value={nombrePais}>
-                  {nombrePais}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button className="btn btn-primary" type="submit">Registrar Usuario</button>
-      </form>
+      </div>
     </div>
   );
-}
+  
+  
+}  
 
 export default Register;

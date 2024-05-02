@@ -13,8 +13,8 @@ export const Header = () => {
                 <Navbar.Brand href="/">Gestion Gastos Personales</Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link href="/">inicio</Nav.Link>
-                    <Nav.Link href="#features">Features</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link>
+                    <Nav.Link href="register">Registrarse</Nav.Link>
+                    <Nav.Link href="info">Acerca de</Nav.Link>
                 </Nav>
                 </Container>
             </Navbar>
