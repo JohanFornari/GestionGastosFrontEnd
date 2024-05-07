@@ -163,9 +163,9 @@ const Spent = () => {
                 </thead>
                 <tbody>
                     {expenses.map(expense => (
-                        <tr key={expense.idSubcategoria}>
+                        <tr key={expense.idGasto}>
                             <td>{expense.fecha.substr(0,10)}</td>
-                            <td>{expense.monto}</td>
+                            <td>{expense.monto.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
                             <td>{expense.descripcion}</td>
                             <td>{expense.categoria.nombCategoria}</td>
                             <td>{expense.subcategoria.nombSubcategoria}</td>

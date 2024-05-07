@@ -19,7 +19,7 @@ function Sidebar() {
 
   return (
     <div className="d-flex">
-      <div className="sidebar bg-light p-4 vh-100 d-flex justify-content-between flex-column" >
+      <div className="sidebar bg-light p-4  d-flex justify-content-between flex-column" >
       <div>
         <h5 className="sidebar-heading mb-4">Dashboard</h5>
         <hr/>
@@ -40,7 +40,7 @@ function Sidebar() {
             <a className="nav-link text-black" href="#" onClick={() => showPanel('gastos')}><i className="bi bi-cash"></i> Gastos</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-black" href="#" onClick={() => showPanel('estadisticas')}><i className="bi bi-graph-up"></i> Estadísticas</a>
+            <a className="nav-link text-black" href="#" onClick={() => showPanel('estadisticas')}><i className="bi bi-graph-up"></i> Reportes</a>
           </li>
         </ul>
         </div>
@@ -77,7 +77,6 @@ function Sidebar() {
           <Spent />
         </div>
         <div id="estadisticas" className="panel" style={{ display: 'none' }}>
-          <h2>Estadísticas</h2>
           <Report />
         </div>
       </div>
