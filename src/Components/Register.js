@@ -60,8 +60,9 @@ function Register() {
         setRPassword('');
         setTelefono('');
         setDireccion('');
-
-
+        setShowAlert(false);
+        sessionStorage.setItem('user', response.data.idUsuario);
+        window.location.href = '/dashboard';
       })
       .catch(error => {
         console.error('Error al crear el usuario:', error);

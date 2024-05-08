@@ -16,6 +16,7 @@ function Sidebar() {
     const panelToShow = document.getElementById(panelId);
     panelToShow.style.display = 'block';
   };
+  
 
   return (
     <div className="d-flex">
