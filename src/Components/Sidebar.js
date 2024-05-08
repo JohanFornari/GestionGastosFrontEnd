@@ -53,7 +53,7 @@ function Sidebar() {
             </a>
             <div className="dropdown-menu" aria-labelledby="triggerId">
               <a className="dropdown-item" href="#">Info</a>
-              <a className="dropdown-item" href="#">Cerrar Sesión</a>
+              <a className="dropdown-item" href="/">Cerrar Sesión</a>
             </div>
           </div>
 

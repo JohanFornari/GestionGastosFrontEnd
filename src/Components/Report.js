@@ -96,16 +96,16 @@ const Report = () => {
   const generatePDF = () => {
     const input = document.getElementById('div-to-print');
   
-    html2canvas(input)
+    html2canvas(input, { scale: 2 }) 
       .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL('image/jpeg', 1.0); 
         const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.width, pdf.internal.pageSize.height);
-        pdf.save('Reporte'+ mes +'.pdf');
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+        pdf.save('reporte.pdf');
       });
   };
-
-
 
   if (!informe) {
     return <p>Cargando informe...</p>;

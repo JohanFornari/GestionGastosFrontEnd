@@ -12,6 +12,7 @@ function Register() {
   const [direccion, setDireccion] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [municipios, setMunicipios] = useState([]);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     // Aquí se realiza la solicitud a la API de municipios
@@ -28,23 +29,13 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Obtener el token de localStorage si está disponible
-    /*
-    const token = localStorage.getItem('token');
-    console.log('token react: ' + token)
-    if (!token) {
-      // Si el usuario no está autenticado, redirigir a la página de inicio de sesión
-      //window.location.href = '#/'; // Cambia la URL según tu configuración
+  
+  
+    if (password !== rpassword) {
+      setAlertMessage('Las contraseñas no coinciden');
+      setShowAlert(true);
       return;
     }
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
-    */
-  
 
     axios.post('http://localhost:8080/usuario', {
       nombre: nombre,
@@ -74,6 +65,8 @@ function Register() {
       })
       .catch(error => {
         console.error('Error al crear el usuario:', error);
+        setAlertMessage('Error al registrar usuario, el correo electronico ya esta registrado');
+        setShowAlert(true);
       });
   };
 
@@ -82,7 +75,11 @@ function Register() {
       <div className="card mx-auto" style={{ maxWidth: '1000px' }}>
         <div className="card-body">
           <h2 className="card-title text-center mb-4">Crear Usuario</h2>
-          
+          {showAlert && (
+            <div className="alert alert-danger" role="alert">
+              {alertMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
   
             <div className="row mb-3">
