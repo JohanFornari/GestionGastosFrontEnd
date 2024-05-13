@@ -61,8 +61,7 @@ function Register() {
         setTelefono('');
         setDireccion('');
         setShowAlert(false);
-        sessionStorage.setItem('user', response.data.idUsuario);
-        window.location.href = '/dashboard';
+        window.location.href = '/';
       })
       .catch(error => {
         console.error('Error al crear el usuario:', error);
