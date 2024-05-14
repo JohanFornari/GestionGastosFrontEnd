@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Form, Button } from 'react-bootstrap';
+import { API_URL } from '../config';
 
 const Subcategory = () => {
+  
   const [subcategories, setSubcategories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newSubcategory, setNewSubcategory] = useState({
@@ -14,7 +16,7 @@ const Subcategory = () => {
     try {
       const userId = sessionStorage.getItem('user');
       console.log(userId);
-      const response = await axios.get('http://localhost:8080/usuario/listarsubcategorias/'+userId);
+      const response = await axios.get(API_URL + '/usuario/listarsubcategorias/'+userId);
       setSubcategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -24,10 +26,8 @@ const Subcategory = () => {
   const loadCategories = async () => {
     try {
       const userId = sessionStorage.getItem('user');
-      console.log(userId);
-      const response = await axios.get('http://localhost:8080/categoria/'+userId);
+      const response = await axios.get(API_URL + '/categoria/' + userId);
       setCategories(response.data);
-      console.log('categorias: ' + response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -43,7 +43,7 @@ const Subcategory = () => {
     try {
       const userId = sessionStorage.getItem('user');
       console.log(newSubcategory);
-      await axios.post(`http://localhost:8080/subcategoria/asociarsubcategoria`,  newSubcategory, 
+      await axios.post(API_URL + '/subcategoria/asociarsubcategoria',  newSubcategory, 
       {
         params: {
           idUsuario: userId,
@@ -61,8 +61,8 @@ const Subcategory = () => {
   };
 
   useEffect(() => {
-    loadSubcategories();
     loadCategories();
+    loadSubcategories();
   }, []);
 
   return (

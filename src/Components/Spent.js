@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Form, Button } from 'react-bootstrap';
+import { API_URL } from '../config';
 
 const Spent = () => {
     const [expenses, setExpenses] = useState([]);
@@ -19,7 +20,7 @@ const Spent = () => {
 
         try {
             const userId = sessionStorage.getItem('user');
-            const response = await axios.get('http://localhost:8080/usuario/listargastos/'+userId);
+            const response = await axios.get(API_URL + '/usuario/listargastos/'+userId);
             console.log(response.data);
             setExpenses(response.data);
         } catch (error) {
@@ -31,7 +32,7 @@ const Spent = () => {
         try {
             const userId = sessionStorage.getItem('user');
             console.log(userId);
-            const response = await axios.get('http://localhost:8080/categoria/'+userId);
+            const response = await axios.get(API_URL + '/categoria/'+userId);
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -41,8 +42,7 @@ const Spent = () => {
     const loadSubcategoriesByCategory = async (categoryId) => {
         try {
             const userId = sessionStorage.getItem('user');
-           // const response = await axios.get(`/subcategoria?categoriaId=${categoryId}`);
-            const response = await axios.get('http://localhost:8080/usuario/listarsubcategorias/'+ userId);
+            const response = await axios.get(API_URL + '/usuario/listarsubcategorias/'+ userId + '/'+ categoryId);
             setSubcategories(response.data);
         } catch (error) {
             console.error('Error fetching subcategories:', error);
@@ -60,7 +60,7 @@ const Spent = () => {
             const userId = sessionStorage.getItem('user');
             newExpense.idUsuario = userId;
             console.log(newExpense);
-            await axios.post('http://localhost:8080/gasto', newExpense);
+            await axios.post(API_URL + '/gasto', newExpense);
             loadExpenses();
             setNewExpense({
                 fecha: '',

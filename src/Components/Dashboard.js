@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Register from './Register';
-import Login from './Login';
 import Sidebar from './Sidebar';
 
 function Dashboard() {

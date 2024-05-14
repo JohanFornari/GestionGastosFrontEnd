@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table } from 'react-bootstrap';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { API_URL } from '../config';
 
 const Report = () => {
   const [informe, setInforme] = useState(null);
@@ -19,7 +20,7 @@ const Report = () => {
     try {
 
       const userId = sessionStorage.getItem('user');
-      const response = await axios.get('http://localhost:8080/usuario/listargastos/' + userId + '/mes/' + ano + '/' + mes);
+      const response = await axios.get(API_URL + '/usuario/listargastos/' + userId + '/mes/' + ano + '/' + mes);
       setExpenses(response.data);
     } catch (error) {
       console.error('Error fetching expenses:', error);
@@ -29,7 +30,7 @@ const Report = () => {
   const LoadIncomes = async (mes, ano) => {
     try {
       const userId = sessionStorage.getItem('user');
-      const response = await axios.get('http://localhost:8080/usuario/ingresos/' + userId + '/mes/' + ano + '/' + mes);
+      const response = await axios.get(API_URL + '/usuario/ingresos/' + userId + '/mes/' + ano + '/' + mes);
       setIncomes(response.data);
     } catch (error) {
       console.error('Error fetching incomes:', error);
@@ -46,39 +47,38 @@ const Report = () => {
     const formattedDate = `${monthNames[monthIndex]} ${year}`;
     return formattedDate;
   };
+  const fetchInforme = async () => {
+    try {
+      const userId = sessionStorage.getItem('user');
+      const response = await axios.get(API_URL + `/usuario/reporte/${userId}`);
+      setInforme(response.data);
+    } catch (error) {
+      console.error('Error al obtener el informe financiero:', error);
+    }
+  };
+
+  const fetchInformeTotal = async () => {
+    try {
+      const userId = sessionStorage.getItem('user');
+      const response = await axios.get(API_URL + `/usuario/reporte/total/${userId}`);
+      setInformeTotal(response.data[0]);
+    } catch (error) {
+      console.error('Error al obtener el informe financiero:', error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const userId = sessionStorage.getItem('user');
+      const response = await axios.get(API_URL + '/usuario/' + userId);
+      console.log(response.data);
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchInforme = async () => {
-      try {
-        const userId = sessionStorage.getItem('user');
-        const response = await axios.get(`http://localhost:8080/usuario/reporte/${userId}`);
-        setInforme(response.data);
-      } catch (error) {
-        console.error('Error al obtener el informe financiero:', error);
-      }
-    };
-
-    const fetchInformeTotal = async () => {
-      try {
-        const userId = sessionStorage.getItem('user');
-        const response = await axios.get(`http://localhost:8080/usuario/reporte/total/${userId}`);
-        setInformeTotal(response.data[0]);
-      } catch (error) {
-        console.error('Error al obtener el informe financiero:', error);
-      }
-    };
-
-    const fetchUserData = async () => {
-      try {
-        const userId = sessionStorage.getItem('user');
-        const response = await axios.get('http://localhost:8080/usuario/' + userId);
-        console.log(response.data);
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
     fetchUserData();
     fetchInforme();
     fetchInformeTotal();
@@ -122,12 +122,12 @@ const Report = () => {
             <div className='card-body'>
               <div className="row mb-3">
                 <div className='col'>
-                  <p><strong>Nombre:</strong> {userData.nombre + ' ' + userData.apellido}</p>
-                  <p><strong>Email:</strong> {userData.email}</p>
+                  <p><strong>Nombre:</strong> {userData && userData.nombre + ' ' + userData.apellido}</p>
+                  <p><strong>Email:</strong> {userData && userData.email}</p>
                 </div>
                 <div className='col'>
-                  <p><strong>Dirección:</strong> {userData.direccion}</p>
-                  <p><strong>Teléfono:</strong> {userData.telefono}</p>
+                  <p><strong>Dirección:</strong> {userData && userData.direccion}</p>
+                  <p><strong>Teléfono:</strong> {userData && userData.telefono}</p>
                 </div>
               </div>
             </div>
@@ -139,12 +139,12 @@ const Report = () => {
             <div className='card-body'>
               <div className="row mb-3">
                 <div className='col'>
-                  <p><strong>Total Ingresos:</strong> {informeTotal[1].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
-                  <p><strong>Total Gastos:</strong> {informeTotal[0].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+                  <p><strong>Total Ingresos:</strong> {informeTotal && informeTotal[1].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+                  <p><strong>Total Gastos:</strong> {informeTotal && informeTotal[0].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                 </div>
                 <div className='col'>
-                  <p><strong>Total Restante:</strong> {informeTotal[2].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
-                  <p><strong>Porcentaje Gastos:</strong> {Math.round(informeTotal[3]) + "%"}</p>
+                  <p><strong>Total Restante:</strong> {informeTotal && informeTotal[2].toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+                  <p><strong>Porcentaje Gastos:</strong> {informeTotal && Math.round(informeTotal[3]) + "%"}</p>
                 </div>
               </div>
             </div>
@@ -166,7 +166,7 @@ const Report = () => {
             </tr>
           </thead>
           <tbody>
-            {informe.map(([mesAnio, totalGastos, totalIngresos, diferencia, porcentaje], index) => (
+            {informe && informe.map(([mesAnio, totalGastos, totalIngresos, diferencia, porcentaje], index) => (
               <tr key={index}>
                 <td>{formatDate(mesAnio)}</td>
                 <td>{totalGastos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
@@ -210,7 +210,7 @@ const Report = () => {
                 </tr>
               </thead>
               <tbody>
-                {incomes.map((income, index) => (
+                {incomes && incomes.map((income, index) => (
                   <tr key={index}>
                     <td>{income.valor.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
                     <td>{income.fecha.substr(0, 10)}</td>

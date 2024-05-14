@@ -1,45 +1,32 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-
-
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    axios.post('http://localhost:8080/login', {
+
+    axios.post(API_URL + '/login', {
       email: username,
       clave: password
     })
-
     .then(response => {
-
-      console.log(response.data)
-
-      if(response.data.idUsuario != null){
-        console.log(response.data.idUsuario)
+      if (response.data.idUsuario) {
         sessionStorage.setItem('user', response.data.idUsuario);
-        window.location.href = '/dashboard';
-      }else{
+        navigate('/dashboard');
+      } else {
         sessionStorage.removeItem('user');
-        console.error('Usuario o contraseña incorrectos:');
         setShowAlert(true);
       }
-      //const token = response.data.token;
-      //console.log(token)
-      // Guardar el token en el localStorage
-      //localStorage.setItem('token', token);
-      // Redireccionar a la página de dashboard
-
-      //
     })
     .catch(error => {
       sessionStorage.removeItem('user');
-      console.error('Error al iniciar sesión:', error);
       setShowAlert(true);
     });
   };
@@ -52,7 +39,7 @@ function Login() {
         </div>
       )}
       <br />
-      <div className="d-flex justify-content-center"> {/* Envuelve el contenido en un div centrado */}
+      <div className="d-flex justify-content-center">
         <div className="card col-md-8">
           <h2 className="text-center">Login</h2>
           <form className="px-4 py-3" onSubmit={handleSubmit}>
@@ -90,12 +77,6 @@ function Login() {
       </div>
     </div>
   );
-  
-
-
-
-
-
 }
 
 export default Login;

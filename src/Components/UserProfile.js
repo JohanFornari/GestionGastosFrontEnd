@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
+
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
@@ -9,10 +11,11 @@ const UserProfile = () => {
   const [updatedPhone, setUpdatedPhone] = useState('');
 
   useEffect(() => {
+    
     const fetchUserData = async () => {
       try {
         const userId = sessionStorage.getItem('user');
-        const response = await axios.get('http://localhost:8080/usuario/' + userId);
+        const response = await axios.get(API_URL + '/usuario/' + userId);
         console.log(response.data);
         setUserData(response.data);
         setLoading(false);
@@ -40,10 +43,11 @@ const UserProfile = () => {
     try {
       const userId = sessionStorage.getItem('user');
       // Envía la solicitud de actualización al servidor
-      const response = await axios.put('http://localhost:8080/usuario/' + userId, {
+      const response = await axios.put(API_URL + '/usuario/' + userId, {
         direccion: updatedAddress,
         telefono: updatedPhone
       });
+      setUserData(response.data);
 
       // Actualiza los datos del usuario localmente después de la actualización exitosa
       setUserData(response.data);

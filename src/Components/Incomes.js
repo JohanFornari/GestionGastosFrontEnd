@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const Incomes = () => {
   const [incomes, setIncomes] = useState([]);
@@ -18,7 +19,7 @@ const Incomes = () => {
   const fetchIncomes = async () => {
     try {
       const userId = sessionStorage.getItem('user');
-      const response = await axios.get('http://localhost:8080/usuario/ingresos/' + userId);
+      const response = await axios.get(API_URL + '/usuario/ingresos/' + userId);
       console.log(response.data)
       setIncomes(response.data);
     } catch (error) {
@@ -28,7 +29,7 @@ const Incomes = () => {
 
   const fetchIncomeTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/tipoingreso/listarTipoIngreso');
+      const response = await axios.get(API_URL + '/tipoingreso/listarTipoIngreso');
       setIncomeTypes(response.data);
     } catch (error) {
       console.error('Error fetching income types:', error);
@@ -47,11 +48,9 @@ const Incomes = () => {
         descripcion
       };
       console.log(newIncome)
-      await axios.post('http://localhost:8080/ingreso', newIncome);
+      await axios.post(API_URL + '/ingreso', newIncome);
       console.log(newIncome)
-      // Refresh the list of incomes after adding a new one
       fetchIncomes();
-      // Reset the form fields after successful addition
       setValue('');
       setDate('');
       setIncomeType('');

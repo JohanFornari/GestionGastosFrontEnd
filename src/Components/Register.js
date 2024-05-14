@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 function Register() {
   const [nombre, setNombre] = useState('');
@@ -37,7 +38,7 @@ function Register() {
       return;
     }
 
-    axios.post('http://localhost:8080/usuario', {
+    axios.post(API_URL + '/usuario', {
       nombre: nombre,
       apellido: apellido,
       municipio: municipio,

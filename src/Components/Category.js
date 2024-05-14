@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Form, Button } from 'react-bootstrap';
+import { API_URL } from '../config';
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -14,7 +15,7 @@ const Category = () => {
     try {
       const userId = sessionStorage.getItem('user');
       console.log(userId);
-      const response = await axios.get('http://localhost:8080/categoria/'+userId);
+      const response = await axios.get(API_URL + '/categoria/'+userId);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -32,7 +33,7 @@ const Category = () => {
       const userId = sessionStorage.getItem('user');
       newCategory.idUsuario = userId;
 
-      await axios.post('http://localhost:8080/categoria/' + userId, newCategory);
+      await axios.post(API_URL + '/categoria/' + userId, newCategory);
       console.log(newCategory);
       loadCategories();
       setNewCategory({
