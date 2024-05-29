@@ -131,7 +131,7 @@ const Incomes = () => {
             {incomes.map((income, index) => (
               <tr key={index}>
                 <td>{income.valor.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
-                <td>{income.fecha.substr(0,10)}</td>
+                <td>{income.fecha && income.fecha.substr(0,10)}</td>
                 <td>{income.tipoIngreso.nombTipoIngreso}</td>
                 <td>{income.descripcion}</td>
               </tr>

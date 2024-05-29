@@ -17,7 +17,7 @@ function Sidebar() {
     <div className="d-flex">
       <div className="sidebar bg-light p-4 d-flex justify-content-between flex-column">
         <div>
-          <h5 className="sidebar-heading mb-4">Dashboard</h5>
+          <h5 className="sidebar-heading mb-4">Menu Principal</h5>
           <hr />
           <ul className="nav flex-column mb-2">
             <li className="nav-item">

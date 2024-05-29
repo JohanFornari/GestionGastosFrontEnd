@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config';
+import { Modal, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Register() {
   const [nombre, setNombre] = useState('');
@@ -12,11 +14,11 @@ function Register() {
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const [municipios, setMunicipios] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [municipios, setMunicipios] = useState([]);
 
   useEffect(() => {
-    // Aquí se realiza la solicitud a la API de municipios
     axios.get('https://api-colombia.com//api/v1/Department')
       .then(response => {
         const nombresMunicipios = response.data.map(municipio => municipio.name);
@@ -30,8 +32,6 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  
-  
     if (password !== rpassword) {
       setAlertMessage('Las contraseñas no coinciden');
       setShowAlert(true);
@@ -46,13 +46,10 @@ function Register() {
       clave: password,
       telefono: telefono,
       direccion: direccion,
-      perfil: {codperfil : 1}
-
-    }
-    )
+      perfil: { idPerfil: 1 }
+    })
       .then(response => {
         console.log(response.data);
-        // Limpia los campos después de crear el riesgo
         setNombre('');
         setApellido('');
         setMunicipio('');
@@ -62,13 +59,18 @@ function Register() {
         setTelefono('');
         setDireccion('');
         setShowAlert(false);
-        window.location.href = '/';
+        setShowSuccessModal(true);
       })
       .catch(error => {
         console.error('Error al crear el usuario:', error);
         setAlertMessage('Error al registrar usuario, el correo electronico ya esta registrado');
         setShowAlert(true);
       });
+  };
+
+  const handleSuccessOk = () => {
+    setShowSuccessModal(false);
+    window.location.href = '/';
   };
 
   return (
@@ -82,7 +84,6 @@ function Register() {
             </div>
           )}
           <form onSubmit={handleSubmit}>
-  
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="nombre" className="form-label">Nombre:</label>
@@ -92,6 +93,7 @@ function Register() {
                   className="form-control"
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
+                  placeholder="Ingresar nombre"
                 />
               </div>
               <div className="col-md-6">
@@ -102,10 +104,10 @@ function Register() {
                   className="form-control"
                   value={apellido}
                   onChange={(e) => setApellido(e.target.value)}
+                  placeholder="Ingresar apellido"
                 />
               </div>
             </div>
-  
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="email" className="form-label">Email:</label>
@@ -115,6 +117,7 @@ function Register() {
                   className="form-control"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Ingresar email"
                 />
               </div>
               <div className="col-md-6">
@@ -125,10 +128,10 @@ function Register() {
                   className="form-control"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Ingresar password"
                 />
               </div>
             </div>
-  
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="rpassword" className="form-label">Repetir Password:</label>
@@ -138,6 +141,7 @@ function Register() {
                   className="form-control"
                   value={rpassword}
                   onChange={(e) => setRPassword(e.target.value)}
+                  placeholder="Repetir password"
                 />
               </div>
               <div className="col-md-6">
@@ -148,10 +152,10 @@ function Register() {
                   className="form-control"
                   value={telefono}
                   onChange={(e) => setTelefono(e.target.value)}
+                  placeholder="Ingresar teléfono"
                 />
               </div>
             </div>
-  
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="direccion" className="form-label">Dirección:</label>
@@ -161,6 +165,7 @@ function Register() {
                   className="form-control"
                   value={direccion}
                   onChange={(e) => setDireccion(e.target.value)}
+                  placeholder="Ingresar dirección"
                 />
               </div>
               <div className="col-md-6">
@@ -180,15 +185,26 @@ function Register() {
                 </select>
               </div>
             </div>
-            <div> <button className="btn btn-primary d-block mx-auto" type="submit">Registrar Usuario</button></div>
-           
+            <div>
+              <button className="btn btn-primary d-block mx-auto" type="submit">Registrar Usuario</button>
+            </div>
           </form>
         </div>
       </div>
+
+      <Modal show={showSuccessModal} onHide={handleSuccessOk} centered>
+        <Modal.Header>
+          <Modal.Title>Registro Exitoso</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Usuario registrado correctamente</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleSuccessOk}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
-  
-  
-}  
+}
 
 export default Register;

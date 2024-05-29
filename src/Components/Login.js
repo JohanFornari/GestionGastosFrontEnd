@@ -47,7 +47,7 @@ function Login() {
               <input
                 className="form-control"
                 type="text"
-                placeholder="Usuario"
+                placeholder="Ingrese email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 name="username" 
@@ -59,7 +59,7 @@ function Login() {
               <input
                 className="form-control"
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Ingrese contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 name="password"

@@ -113,12 +113,12 @@ const Report = () => {
 
   return (
     <div id = 'div-to-print'>
-    <div className="container mt-5">
+    <div className="container mt-6">
       <h2 className="text-center mb-4">Reporte Financiero</h2>
       <hr />
       <div className="row justify-content-center">
-        <div className="col-md-4">
-          <div className="card mb-4">
+        <div className="col-md-5">
+          <div className="card mb-5">
             <div className='card-body'>
               <div className="row mb-3">
                 <div className='col'>
